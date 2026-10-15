@@ -19,5 +19,5 @@ def analyze_duplex_margins(mortgage_rate, loan_amount, base_rent, inflation_rate
     "gross_rental_revenue": round(gross_rental_revenue, 2),
     "net_operating_income": round(net_operating_income, 2),
     "cash_flow": round(cash_flow, 2),
-    "margin_pct": round(duxplex_margin_pct, 2),
+    "margin_pct": round(duxplex_marginal_pct, 2),
   }
