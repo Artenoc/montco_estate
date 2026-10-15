@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Cache-Control: no-cache, must-revalidate');
 
 try {
-  $db = new PDO('sqlite:../montco_macro.db');
+  $db = new PDO('sqlite:montco_macro.db');
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   $stmt = $db->query('SELECT * FROM duplex_timeline ORDER BY date ASC')
