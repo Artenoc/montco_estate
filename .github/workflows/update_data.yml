@@ -39,4 +39,20 @@ jobs:
           # Only commit if the database file actually changed
           git commit -m "Automated update of montco_macro.db" || echo "No changes to commit"
           git push
+
+      - name: Deploy Data to deryk.mcgarry.io
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: public-html/deryk/data/montco_estate
+          exclude: |
+            **./git*
+            **./git*/**
+            **./github/**
+            etl.py
+            README.md
+          
+          
           
