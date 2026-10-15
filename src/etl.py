@@ -31,6 +31,12 @@ scenario = analyze_duplex_margins(
   operational_expenses = 800
 )
 
-print(f"Monthly Cash Flow: ${scenario['cash_flow']}")
-print(f"Margin: {scenario['margin_pct']}%")
+#print(f"Monthly Cash Flow: ${scenario['cash_flow']}")
+#print(f"Margin: {scenario['margin_pct']}%")
+
+df_combined.index.name = 'date'
+
+conn = sqlite3.connect('montco_macro.db')
+df_combined.to_sql('duplex_timeline', conn, if_exists='replace', index=True)
+conn.close()
 
