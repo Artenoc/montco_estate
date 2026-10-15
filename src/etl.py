@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from fredapi import Fred
-import pandas apd
+import pandas as pd
 from cashFlow import analyze_duplex_margins
 
 load_dotenv()
