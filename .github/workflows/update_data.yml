@@ -46,11 +46,11 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: public-html/deryk/data/montco_estate
+          server-dir: public_html/deryk/data/montco_estate
           exclude: |
-            **./git*
-            **./git*/**
-            **./github/**
+            **/.git*
+            **/.git*/**
+            **/.github/**
             etl.py
             README.md
           
