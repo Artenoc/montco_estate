@@ -7,7 +7,7 @@ try {
   $db = new PDO('sqlite:montco_macro.db');
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  $stmt = $db->query('SELECT * FROM duplex_timeline ORDER BY date ASC')
+  $stmt = $db->query('SELECT * FROM duplex_timeline ORDER BY date ASC');
   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   echo json_encode ([
