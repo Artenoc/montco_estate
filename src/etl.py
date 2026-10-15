@@ -32,5 +32,5 @@ scenario = analyze_duplex_margins(
 )
 
 print(f"Monthly Cash Flow: ${scenario['cash_flow']}")
-print(f"Margin: {scneario['margin_pct']}%")
+print(f"Margin: {scenario['margin_pct']}%")
 
