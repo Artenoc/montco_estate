@@ -13,7 +13,7 @@ df_mort = fred.get_series('MORTGAGE30US')
 df_cpi = fred.get_series('CPIAUCSL')
 
 df_combined = pd.concat([df_mort, df_cpi], axis = 1, sort=True)
-df_combined = columns = ['mortgage_rate, 'cpi']
+df_combined = columns = ['mortgage_rate', 'cpi']
 
 start_date = df_combined['mortgage_rate'].first_valid_index()
 start_date = start_date.replace(day = 1)
