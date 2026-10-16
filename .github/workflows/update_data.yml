@@ -48,7 +48,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 65002
           source: "montco_macro.db,duplex_data.php"
-          target: "public_html/deryk/data/montco_estate/"
+          target: "domains/public_html/deryk/data/montco_estate/"
           
           
           
