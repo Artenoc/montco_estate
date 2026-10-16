@@ -42,17 +42,17 @@ jobs:
 
       - name: Deploy Data to deryk.mcgarry.io via SFTP
         env:
-          ssh_host: ${{ secrets.FTP_SERVER }}
-          ssh_user: ${{ secrets.FTP_USERNAME }}
-          sshpass: ${{ secrets.FTP_PASSWORD }}
+          SSH_HOST: ${{ secrets.FTP_SERVER }}
+          SSH_USER: ${{ secrets.FTP_USERNAME }}
+          SSHPASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           sudo apt-get update && sudo apt-get install -y sshpass 
-          TARGET_DIR=$(ssh_pass -e ssh -p 65002 -o StrictHostKeyChecking=0 "$ssh_user@$ssh_host" '
+          TARGET_DIR=$(sshpass -e ssh -p 65002 -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" '
           if [ -d "public_html/deryk" ]; then
             mkdir -p public_html/deryk/data/montco_estate
             echo "public_html/deryk/data/montco_estate"
           elif [ -d "domains/mcgarry.io/public_html/deryk" ]; then
-            mdkdir -p domains/mcgarry.io/public_html/deryk/data/montco_estate
+            mkdir -p domains/mcgarry.io/public_html/deryk/data/montco_estate
             echo "domains/mcgarry.io/public_html/deryk/data/montco_estate"
           elif [ -d "domains/deryk.mcgarry.io/public_html" ]; then
               mkdir -p domains/deryk.mcgarry.io/public_html/data/montco_estate
@@ -61,7 +61,7 @@ jobs:
               echo "NOT_FOUND"
             fi
           ')
-          if [ "$TARGET_DIR = "NOT_FOUND" ]; then
+          if [ "$TARGET_DIR" = "NOT_FOUND" ]; then
             echo "Could not auto-detect folder. Here is the server directory layout:"
             sshpass -e ssh -p 65002 -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "pwd && ls -la && ls -la domains/ 2>/dev/null || true"
             exit 1
@@ -69,9 +69,9 @@ jobs:
 
           echo "Found target directory: $TARGET_DIR"
 
-          sshpass -e scp -P 65002 -o StrictHostKeyChecking=no montco_macro.db duplex_data.php "ssh_user@$ssh_host:$TARGET_DIR/"
+          sshpass -e scp -P 65002 -o StrictHostKeyChecking=no montco_macro.db duplex_data.php "$SSH_USER@$SSH_HOST:$TARGET_DIR/"
 
           echo "Deployment Complete! Files in $TARGET_DIR"
-          sshpass -e scp -P 65002 -o StrictHostKeyChecking=no "$ssh_user@$ssh_host" "ls -lh $TARGET_DIR"
+          sshpass -e ssh -p 65002 -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "ls -lh $TARGET_DIR"
           
           
