@@ -40,20 +40,15 @@ jobs:
           git commit -m "Automated update of montco_macro.db" || echo "No changes to commit"
           git push
 
-      - name: Deploy Data to deryk.mcgarry.io
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+      - name: Deploy Data to deryk.mcgarry.io via SFTP
+        uses: appleboy/scp-action@v0.1.7
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          server-dir: deryk/data/montco_estate/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.github/**
-            src/**
-            README.md
+          port: 65002
+          source: "montco_macro.db,duplex_data.php"
+          target: "public_html/deryk/data/montco_estate/"
           
           
           
