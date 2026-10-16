@@ -43,7 +43,7 @@ jobs:
       - name: Deploy Data to deryk.mcgarry.io via SFTP
         uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 65002
