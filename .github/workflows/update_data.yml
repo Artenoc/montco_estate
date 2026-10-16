@@ -46,8 +46,8 @@ jobs:
           ssh_user: ${{ secrets.FTP_USERNAME }}
           ssh_pass: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get update && sudo apt-get install -y sshpass
-          TARGET-DIR=$(sshpass - e ssh -p 65002 -o StrictHostKeyChecking=0 "$ssh_user@$ssh_host" '
+          sudo apt-get update && sudo apt-get install -y sshpass 
+          TARGET_DIR=$(sshpass -e ssh -p 65002 -o StrictHostKeyChecking=0 "$ssh_user@$ssh_host" '
           if [ -d "public_html/deryk" ]; then
             mkdir -p public_html/deryk/data/montco_estate
             echo "public_html/deryk/data/montco_estate"
