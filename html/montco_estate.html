@@ -3,61 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solar Power Monitor (Staging)</title>
+  <title>Montco Estate</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <header>
-    <h1 class="logo">Solar Power Monitor</h1>
+    <h1 class="logo">Montco Estate</h1>
   </header>
 
   <div class="container">
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="solarmonitor_staging.html" class="current">Solar Power Monitor</a></li>
+        <li><a href="solarmonitor.html" class="current">Solar Power Monitor</a></li>
         <li><a href="PVChar.html">PV Characterization</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
-    <section class="controlpanel">
-      <div class="VCP">
-        Voltage: <span id="currentVoltage">--</span> V |
-        Current: <span id="currentCurrent">--</span> A |
-        Power: <span id="currentPower">--</span> W
+        <label style="margin-left:2em;">
+        <label><input type="checkbox" id="showMortgage" checked /> Mortgage Rates</label>
+        <label><input type="checkbox" id="showCPI" checked /> CPI</label>
       </div>
-
-      <div class="controls">
-        <label>Time Range:
-          <select id="timeRange">
-            <option value="300000">Last 5 Minutes</option>
-            <option value="1800000">Last 30 Minutes</option>
-            <option value="3600000">Last 1 Hour</option>
-            <option value="18000000">Last 5 Hours</option>
-            <option value="custom">Custom Range</option>
-          </select>
-        </label>
-
-        <label style="margin-left:2em;"><input type="checkbox" id="showVoltage" checked /> Voltage</label>
-        <label><input type="checkbox" id="showCurrent" checked /> Current</label>
-        <label><input type="checkbox" id="showPower" checked /> Power</label>
-      </div>
-
-      <div id="customTimeControls" style="display:none; margin-top:1em;">
-        <label>Date:
-          <input type="date" id="customDate">
-        </label>
-        <label>Start Hour:
-          <input type="number" id="customHourStart" min="0" max="23" value="0">
-        </label>
-        <label>End Hour:
-          <input type="number" id="customHourEnd" min="0" max="23" value="23">
-        </label>
-        <button onclick="fetchData()">Apply</button>
-      </div>
-    </section>
 
     <canvas id="mainChart"></canvas>
   </div>
@@ -72,25 +40,17 @@
         labels: [],
         datasets: [
           {
-            label: 'Voltage (V)',
+            label: 'Mortgate Data',
             data: [],
-            borderColor: 'blue',
+            borderColor: 'red',
             yAxisID: 'y',
             fill: false,
             tension: 0.1
           },
           {
-            label: 'Current (A)',
+            label: 'Consumer Price Index',
             data: [],
-            borderColor: 'green',
-            yAxisID: 'y1',
-            fill: false,
-            tension: 0.1
-          },
-          {
-            label: 'Power (W)',
-            data: [],
-            borderColor: 'orange',
+            borderColor: 'blue',
             yAxisID: 'y1',
             fill: false,
             tension: 0.1
@@ -105,13 +65,13 @@
           y: {
             type: 'linear',
             position: 'left',
-            title: { display: true, text: 'Voltage (V)' },
+            title: { display: true, text: 'Mortgage Rates' },
             beginAtZero: true
           },
           y1: {
             type: 'linear',
             position: 'right',
-            title: { display: true, text: 'Current / Power' },
+            title: { display: true, text: 'CPI' },
             beginAtZero: true,
             grid: { drawOnChartArea: false }
           }
