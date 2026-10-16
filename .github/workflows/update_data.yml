@@ -2,7 +2,7 @@ name: Weekly Montco Real Estate Data Update
 
 on:
   schedule:
-    - cron: '0 12 * * 3'
+    - cron: '0 12 * * 5'
   workflow_dispatch:
 
 permissions:
@@ -46,7 +46,7 @@ jobs:
           SSH_USER: ${{ secrets.FTP_USERNAME }}
           SSHPASS: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get update && sudo apt-get install -y sshpass 
+          #sudo apt-get update && sudo apt-get install -y sshpass 
           TARGET_DIR=$(sshpass -e ssh -p 65002 -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" '
           if [ -d "public_html/deryk" ]; then
             mkdir -p public_html/deryk/data/montco_estate
