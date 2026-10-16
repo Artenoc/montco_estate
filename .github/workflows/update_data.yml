@@ -48,6 +48,6 @@ jobs:
         run: |
           sshpass -e scp -P 65002 -o StrictHostKeyChecking=no \
             montco_macro.db duplex_data.php \
-            "SSH_USER@$SSH_HOST:domains/mcgarry.io/public_html/deryk/data/montco_estate/"
+            "$SSH_USER@$SSH_HOST:domains/mcgarry.io/public_html/deryk/data/montco_estate/"
           
           
