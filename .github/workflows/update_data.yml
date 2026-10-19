@@ -20,6 +20,11 @@ jobs:
         uses: actions/setup-python@v5
         with: 
           python-version: '3.13'
+
+      - name: Install System Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
   
       - name: Install Dependencies
         run: |
@@ -48,7 +53,15 @@ jobs:
           SSHPASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           sshpass -e scp -P 65002 -o StrictHostKeyChecking=no \
-            montco_macro.db duplex_data.php \
+            montco_macro.db \
             "$SSH_USER@$SSH_HOST:domains/mcgarry.io/public_html/deryk/data/montco_estate/"
+
+          sshpass -e scp -P 65002 -o StrictHostKeyChecking=no \
+           api/get_macro_data.php \
+            "$SSH_USER@$SSH_HOST:domains/mcgarry.io/public_html/deryk/api/"
+
+          sshpass -e scp -P 65002 -o StrictHostKeyChecking=no \
+            html/montco_estate.html \
+            "$SSH_USER@$SSH_HOST:domains/mcgarry.io/public_html/deryk/"
           
           
