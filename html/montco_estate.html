@@ -126,7 +126,7 @@
     async function fetchMacroData() {
       try {
 
-        const reponse = await fetch('get_macro_data.php');
+        const response = await fetch('api/get_macro_data.php');
         if (!response.ok) {
           throw new Error('HTTP Error: ${response.status}');
         }
@@ -148,8 +148,8 @@
           const latestC = data.cpi[lastIndex];
 
           document.getElementById('latestDate').textContent = data.dates[lastIndex];
-          document.getElementById('latestMortgage').textContext = latestM !== null ? '${latestM.toFixed(2)}%' : 'N/A';
-          document.getElementById('latestCPI').textContext = latestC !== null ? latestC.toFixed(1) : 'N/A';
+          document.getElementById('latestMortgage').textContent = latestM !== null ? ${latestM.toFixed(2)}% : 'N/A';
+          document.getElementById('latestCPI').textContent = latestC !== null ? latestC.toFixed(1) : 'N/A';
 
         }
       } catch (err) {
@@ -160,12 +160,12 @@
     document.getElementById('showMortgage').addEventListener('change', e => {
       chart.data.datasets[0].hidden = !e.target.checked;
       chart.options.scales.yMortgage.display = e.target.checked;
-      chart.updates();
+      chart.update();
     });
 
     document.getElementById('showCPI').addEventListener('change', e => {
       chart.data.datasets[0].hidden = !e.target.checked;
-      chart.options.scales.yMCPI.display = e.target.checked;
+      chart.options.scales.yCPI.display = e.target.checked;
       chart.updates();
     });
 
