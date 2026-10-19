@@ -29,7 +29,9 @@ jobs:
       - name: Run extraction and generate montco_macro.db
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: python src/etl.py
+        run: |
+          rm -f montco_macro.db
+          python src/etl.py
 
       - name: Commit and push updated SQLite database
         run: |
