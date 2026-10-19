@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Montco Estate</title>
+  <title>Montco Estate Analytics</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -12,22 +12,49 @@
     <h1 class="logo">Montco Estate</h1>
   </header>
 
-  <div class="container">
+<div class="container">
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="solarmonitor.html" class="current">Solar Power Monitor</a></li>
+        <li><a href="montco_estate.html" class="current">Montco Macro</a></li>
+        <li><a href="solarmonitor.html">Solar Power Monitor</a></li>
         <li><a href="PVChar.html">PV Characterization</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
-        <label style="margin-left:2em;">
-        <label><input type="checkbox" id="showMortgage" checked /> Mortgage Rates</label>
-        <label><input type="checkbox" id="showCPI" checked /> CPI</label>
-      </div>
 
-    <canvas id="mainChart"></canvas>
+    <div class="stats-grid" style="display: flex; gap: 1.5rem; margin: 1.5rem 0;">
+      <div class="stat-card" style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1;">
+        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase;">Latest 30Y Mortgage</span>
+        <div style="font-size: 1.5rem; font-weight: bold; color: #dc2626;" id="latestMortgage">--%</div>
+      </div>
+      <div class="stat-card" style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1;">
+        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase;">Latest Philly CPI</span>
+        <div style="font-size: 1.5rem; font-weight: bold; color: #2563eb;" id="latestCPI">--</div>
+      </div>
+      <div class="stat-card" style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1;">
+        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase;">Latest Update</span>
+        <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b;" id="latestDate">--</div>
+      </div>
+    </div>
+
+    <!-- Chart Controls -->
+    <div class="controls-panel" style="margin: 1rem 0; display: flex; align-items: center; gap: 1.5rem;">
+      <label style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+        <input type="checkbox" id="showMortgage" checked /> 
+        <span style="color: #dc2626; font-weight: 600;">30-Year Mortgage Rate (%)</span>
+      </label>
+      <label style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+        <input type="checkbox" id="showCPI" checked /> 
+        <span style="color: #2563eb; font-weight: 600;">Philly CPI (Index)</span>
+      </label>
+    </div>
+
+
+    <div class="chart-container" style="position: relative; width: 100%; min-height: 420px;">
+      <canvas id="mainChart"></canvas>
+    </div>
   </div>
 
   <footer></footer>
@@ -40,144 +67,110 @@
         labels: [],
         datasets: [
           {
-            label: 'Mortgate Data',
+            label: '30-Year Fixed Mortgate Rate (%)',
             data: [],
-            borderColor: 'red',
-            yAxisID: 'y',
-            fill: false,
-            tension: 0.1
+            borderColor: '#dc2626',
+            backgroundColor: 'rgba(220, 38, 38, 0.08)',
+            yAxisID: 'yMortgage',
+            fill: true,
+            tension: 0.2,
+            pointRadius: 2,
+            borderWidth: 2
           },
           {
-            label: 'Consumer Price Index',
+            label: 'Philadelphia Area CPI',
             data: [],
-            borderColor: 'blue',
-            yAxisID: 'y1',
-            fill: false,
-            tension: 0.1
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37, 99, 235, 0.08)',
+            yAxisID: 'yCPI',
+            fill: true,
+            tension: 0.2,
+            pointRadius: 2,
+            pointWidthL 2
           }
         ]
       },
-      options: {
+      options: 
+        responsive: true
+        maintainAspectRatio: false,
+        interation{
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {display: false}
+        },
         scales: {
           x: {
-            title: { display: true, text: 'Time' }
+            title: { display: true, text: 'Date (Year-Month' },
+            grid : { color: '#f1f59' }
           },
-          y: {
+          yMortgage: {
             type: 'linear',
             position: 'left',
-            title: { display: true, text: 'Mortgage Rates' },
-            beginAtZero: true
+            title: { display: true, text: 'Mortgage Rate (%)' },
+            beginAtZero: false,
+            grid: { color: '#f1f59' }
           },
-          y1: {
+          yCPI: {
             type: 'linear',
             position: 'right',
             title: { display: true, text: 'CPI' },
-            beginAtZero: true,
+            beginAtZero: false,
             grid: { drawOnChartArea: false }
           }
         }
       }
     });
 
-    function formatLocalTimestamp(date) {
-      const pad = n => n.toString().padStart(2, '0');
-      return date.getFullYear()
-        + '-' + pad(date.getMonth() + 1)
-        + '-' + pad(date.getDate())
-        + ' ' + pad(date.getHours())
-        + ':' + pad(date.getMinutes())
-        + ':' + pad(date.getSeconds());
-    }
-
-    async function fetchData() {
-      const selectedValue = document.getElementById("timeRange").value;
-      let sinceTimestamp;
-      let url = "smartdata.php?";
-    
-      if (selectedValue === "custom") {
-        const dateStr = document.getElementById("customDate").value;
-        const hourStart = parseInt(document.getElementById("customHourStart").value, 10);
-        const hourEnd = parseInt(document.getElementById("customHourEnd").value, 10);
-    
-        if (!dateStr || isNaN(hourStart) || isNaN(hourEnd) || hourEnd < hourStart) {
-          alert("Please enter a valid custom time range.");
-          return;
-        }
-    
-        // Parse the date properly
-        const [year, month, day] = dateStr.split("-");
-        const startDate = new Date(year, month - 1, day, hourStart);
-    
-        // Build proper `since` string and `date` for the filename
-        sinceTimestamp = formatLocalTimestamp(startDate);
-        const dateParam = `${parseInt(month)}_${parseInt(day)}_${year}`;
-    
-        const endDate = new Date(year, month - 1, day, hourEnd);
-        const endTimestamp = formatLocalTimestamp(endDate);
-        url += `since=${encodeURIComponent(sinceTimestamp)}&end=${encodeURIComponent(endTimestamp)}&date=${encodeURIComponent(dateParam)}`;
-      } else {
-        const rangeMs = parseInt(selectedValue, 10);
-        const sinceDate = new Date(Date.now() - rangeMs);
-        sinceTimestamp = formatLocalTimestamp(sinceDate);
-        url += `since=${encodeURIComponent(sinceTimestamp)}`;
-      }
-    
+    async function fetchMacroData() {
       try {
-        const response = await fetch(url);
-        const newData = await response.json();
-        if (!newData.length) {
-          console.log("No data returned for", url);
+
+        const reponse = await fetch('get_macro_data.php');
+        if (!response.ok) {
+          throw new Error('HTTP Error: ${response.status}');
+        }
+
+        const data = await response.json();
+        if (data.error) {
+          console.error("Database query failed:", data.error);
           return;
         }
-    
-        newData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        chart.data.labels = newData.map(e => e.timestamp);
-        chart.data.datasets[0].data = newData.map(e => e.voltage);
-        chart.data.datasets[1].data = newData.map(e => e.current);
-        chart.data.datasets[2].data = newData.map(e => e.power);
+
+        chart.data.labels = data.dates;
+        chart.data.datasets[0].data = data.mortgage_rates;
+        chart.data.datasets[1].data = data.cpi;
         chart.update();
-    
-        const last = newData[newData.length - 1];
-        document.getElementById('currentVoltage').textContent = last.voltage.toFixed(3);
-        document.getElementById('currentCurrent').textContent = last.current.toFixed(3);
-        document.getElementById('currentPower').textContent = last.power.toFixed(3);
+
+        const lastIndex = data.dates.length - 1
+        if (lastIndex >= 0) {
+          const latestM = data.mortgage_rates[lastIndex];
+          const latestC = data.cpi[lastIndex];
+
+          document.getElementById('latestDate').textContent = data.dates[lastIndex];
+          document.getElementById('latestMortgage').textContext = latestM !== null ? '${latestM.toFixed(2)}%' : 'N/A';
+          document.getElementById('latestCPI').textContext = latestC !== null ? latestC.toFixed(1) : 'N/A';
+
+        }
       } catch (err) {
-        console.error("Error loading data:", err);
+        console.error("Error fetching macro data:", err);
       }
     }
 
-
-    // Initial fetch
-    fetchData();
-    setInterval(() => {
-      if (document.getElementById("timeRange").value !== "custom") fetchData();
-    }, 5000);
-
-    // Toggle custom controls visibility
-    document.getElementById('timeRange').addEventListener('change', e => {
-      const isCustom = e.target.value === "custom";
-      document.getElementById('customTimeControls').style.display = isCustom ? 'block' : 'none';
-      if (!isCustom) fetchData();
-    });
-
-    // Toggle visibility of each data line
-    document.getElementById('showVoltage').addEventListener('change', e => {
+    document.getElementById('showMortgage').addEventListener('change', e => {
       chart.data.datasets[0].hidden = !e.target.checked;
-      chart.update();
-    });
-    document.getElementById('showCurrent').addEventListener('change', e => {
-      chart.data.datasets[1].hidden = !e.target.checked;
-      chart.update();
-    });
-    document.getElementById('showPower').addEventListener('change', e => {
-      chart.data.datasets[2].hidden = !e.target.checked;
-      chart.update();
-    });
-    document.addEventListener("DOMContentLoaded", () => {
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("customDate").value = today;
+      chart.options.scales.yMortgage.display = e.target.checked;
+      chart.updates();
     });
 
+    document.getElementById('showCPI').addEventListener('change', e => {
+      chart.data.datasets[0].hidden = !e.target.checked;
+      chart.options.scales.yMCPI.display = e.target.checked;
+      chart.updates();
+    });
+
+    document.addEventListener("DOMContentLoaded", fetchMacroData);
+        
   </script>
 </body>
 </html>
