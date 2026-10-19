@@ -93,7 +93,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        interation{
+        interaction: {
           mode: 'index',
           intersect: false
         },
@@ -103,14 +103,14 @@
         scales: {
           x: {
             title: { display: true, text: 'Date (Year-Month' },
-            grid : { color: '#f1f59' }
+            grid : { color: '#f1f5f9' }
           },
           yMortgage: {
             type: 'linear',
             position: 'left',
             title: { display: true, text: 'Mortgage Rate (%)' },
             beginAtZero: false,
-            grid: { color: '#f1f59' }
+            grid: { color: '#f1f5f9' }
           },
           yCPI: {
             type: 'linear',
@@ -128,7 +128,7 @@
 
         const response = await fetch('api/get_macro_data.php');
         if (!response.ok) {
-          throw new Error('HTTP Error: ${response.status}');
+          throw new Error(`HTTP Error: ${response.status}`);
         }
 
         const data = await response.json();
@@ -148,7 +148,7 @@
           const latestC = data.cpi[lastIndex];
 
           document.getElementById('latestDate').textContent = data.dates[lastIndex];
-          document.getElementById('latestMortgage').textContent = latestM !== null ? ${latestM.toFixed(2)}% : 'N/A';
+          document.getElementById('latestMortgage').textContent = latestM !== null ? `${latestM.toFixed(2)}%` : 'N/A';
           document.getElementById('latestCPI').textContent = latestC !== null ? latestC.toFixed(1) : 'N/A';
 
         }
@@ -166,7 +166,7 @@
     document.getElementById('showCPI').addEventListener('change', e => {
       chart.data.datasets[0].hidden = !e.target.checked;
       chart.options.scales.yCPI.display = e.target.checked;
-      chart.updates();
+      chart.update();
     });
 
     document.addEventListener("DOMContentLoaded", fetchMacroData);
