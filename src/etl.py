@@ -38,6 +38,7 @@ scenario = analyze_duplex_margins(
 df_combined.index.name = 'date'
 
 conn = sqlite3.connect('montco_macro.db')
+conn.execute("DROP TABLE IF EXISTS duplex_timeline")
 df_combined.to_sql('montco_monthly', conn, if_exists='replace', index=True)
 conn.close()
 
