@@ -30,7 +30,7 @@
         <div style="font-size: 1.5rem; font-weight: bold; color: #dc2626;" id="latestMortgage">--%</div>
       </div>
       <div class="stat-card" style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1;">
-        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase;">Latest Philly CPI</span>
+        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase;">Latest CPI</span>
         <div style="font-size: 1.5rem; font-weight: bold; color: #2563eb;" id="latestCPI">--</div>
       </div>
       <div class="stat-card" style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; flex: 1;">
@@ -47,7 +47,7 @@
       </label>
       <label style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
         <input type="checkbox" id="showCPI" checked /> 
-        <span style="color: #2563eb; font-weight: 600;">Philly CPI (Index)</span>
+        <span style="color: #2563eb; font-weight: 600;">Consumer Price Index</span>
       </label>
     </div>
 
@@ -78,7 +78,7 @@
             borderWidth: 2
           },
           {
-            label: 'Philadelphia Area CPI',
+            label: 'Consumer Price Index',
             data: [],
             borderColor: '#2563eb',
             backgroundColor: 'rgba(37, 99, 235, 0.08)',
@@ -102,7 +102,7 @@
         },
         scales: {
           x: {
-            title: { display: true, text: 'Date (Year-Month' },
+            title: { display: true, text: 'Date (Year-Month-Time)' },
             grid : { color: '#f1f5f9' }
           },
           yMortgage: {
