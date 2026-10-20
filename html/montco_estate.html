@@ -164,7 +164,7 @@
     });
 
     document.getElementById('showCPI').addEventListener('change', e => {
-      chart.data.datasets[0].hidden = !e.target.checked;
+      chart.data.datasets[1].hidden = !e.target.checked;
       chart.options.scales.yCPI.display = e.target.checked;
       chart.update();
     });
