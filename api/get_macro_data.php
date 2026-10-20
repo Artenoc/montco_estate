@@ -26,14 +26,14 @@ try {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]);
 
-  $stmt = $db->query("SELECT MORTGAGE30US, CPIAUCSL FROM montco_macro ORDER BY date ASC");
+  $stmt = $db->query("SELECT date, MORTGAGE30US, CPIAUCSL FROM montco_macro ORDER BY date ASC");
   $rows = $stmt->fetchAll();
 
   $dates = [];
   $mortgageRates = [];
   $cpiValues = [];
 
-  foreach ($rows as row) {
+  foreach ($rows as $row) {
     $dates[] = $row['date'];
     $mortgageRates[] = isset($row['MORTGAGE30US']) ? (float)$row['MORTGAGE30US'] : null;
     $cpiValues[] = isset($row['CPIAUCSL']) ? (float)$row['CPIAUCSL']: null;
@@ -41,7 +41,7 @@ try {
 
   echo json_encode([
                    'dates' => $dates,
-                   'mortgate_rates' => $mortgageRates,
+                   'mortgage_rates' => $mortgageRates,
                    'cpi' => $cpiValues
   ]);
 
