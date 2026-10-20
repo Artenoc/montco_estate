@@ -27,7 +27,7 @@ try {
                   ]);
 
   // FIX 1: Added 'date' to the SELECT statement
-  $stmt = $db->query("SELECT date, MORTGAGE30US, CPIAUCSL FROM montco_macro ORDER BY date ASC");
+  $stmt = $db->query("SELECT date, MORTGAGE30US, CPIAUCSL FROM montco_monthly ORDER BY date ASC");
   $rows = $stmt->fetchAll();
 
   $dates = [];
